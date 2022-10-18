@@ -2,6 +2,8 @@ import fetch from "node-fetch";
 import express from "express";
 import cors from "cors";
 
+const port = process.env.PORT || 9000;
+
 const app = express();
 app.use(cors());
 app.use(express.static("public"));
@@ -38,16 +40,14 @@ app.get("/api", async (req, res) => {
     }
 
     const data = await resp.arrayBuffer();
-    const final =
-      "data:application/pdf;base64, " + Buffer.from(data).toString("base64");
-    res.statusCode = 200
-    res.send(final);
+    const final = "data:application/pdf;base64, " + Buffer.from(data).toString("base64");
+    res.status(200).send(final);
   } catch (error) {
     console.log(error);
     res.send(error);
   }
 });
 
-app.listen(process.env.PORT || 9000, () => {
-  console.log("Listening on port 9000");
+app.listen(port, () => {
+  console.log(`Listening on port: ${port}`);
 });
